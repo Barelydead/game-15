@@ -1,6 +1,6 @@
 ## Installation guide
 
-```git clone project [project-directory]```
+```clone the repository```
 
 ```cd [project-directory]```
 

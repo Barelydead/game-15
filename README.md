@@ -1,8 +1,8 @@
 ## Installation guide
 
-```git clone project```
+```git clone project [project-directory]```
 
-```cd project-dir```
+```cd [project-directory]```
 
 ```npm install```
 
@@ -13,4 +13,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Extra Features
 
-Change the game size by editing the `this.state.rows` and `this.state.cols` values in `src\App.js`
+Change the games board size by editing the `this.state.rows` and `this.state.cols` values in `src\App.js`

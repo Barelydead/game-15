@@ -1,28 +1,64 @@
+body {
+  padding: 4rem 0 6rem;
+}
+
 .board {
-  width: 500px;
-  height: 400px;
-  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
 }
 
+.game {
+  margin: 0 auto;
+}
+
+.game-controls {
+  display: flex;
+  margin-top: 3rem;
+}
+
 .tile {
   box-sizing: border-box;
-  width: 100px;
-  height: 100px;
-  border: 1px solid #61dafb;
-  font-size: 3rem;
+  position: relative;
+  border: 1px solid #141479;
+  font-size: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.5s ease-in;
+  transition: all 0.2s ease-in;
+  transition-property: left, top;
   transform: matrix(1, 0, 0, 1, 0, 0);
+  left: 0;
+  top: 0;
+}
+
+
+.tile:hover {
+  background-color: #eee;
 }
 
 .hidden {
   color: white;
-  opacity: 1;
   position: relative;
   z-index: -1;
   border: none;
+}
+
+.btn {
+  padding: 1rem;
+  border: none;
+  text-transform: uppercase;
+  color: white;
+}
+
+.btn:hover {
+  text-decoration: underline;
+}
+
+.btn-solve {
+  background-color: green;
+}
+
+
+.btn-shuffle {
+  background-color: #141479;;
 }

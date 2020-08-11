@@ -6,18 +6,21 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: 4,
-      cols: 4,
-      finnished: false,
+      rows: 5,
+      cols: 5,
       game: [],
-      startingGame: [],
+      tileSize: 0,
     };
   }
 
   componentDidMount = () => {
     this.setBoardSize();
-    this.initBoard();
     this.shuffleBoard();
+    window.addEventListener("resize", this.setBoardSize);
+  }
+
+  componentWillMount = () => {
+    this.initBoard();
   }
   
   render() {
@@ -28,19 +31,39 @@ class App extends React.Component {
             return <GameTile onClick={(evt) => this.handleClick(value, evt)} key={i} value={value}></GameTile>
           })}
         </div>
-        <button onClick={this.shuffleBoard}>Shuffle the board</button>
+        <div class="game-controls">
+          <button className="btn btn-shuffle" onClick={this.shuffleBoard}>Shuffle the board</button>
+          <button className="btn btn-solve" onClick={this.initBoard}>Solve the board</button>
+        </div>
       </div>
     );
   }
 
-  setBoardSize = () => {
-    const width = this.state.cols * 100;
-    const height = this.state.rows * 100;
+  hasMoreRows = () => {
+    return this.state.rows > this.state.cols;
+  }
 
-    console.log(height);
-    
-    document.querySelector('.board').style.width = width + 'px';
-    document.querySelector('.board').style.height = height + 'px';
+  setBoardSize = () => {
+    const winHeight = window.innerHeight;
+    const winWidth = window.innerWidth ;
+
+    const height = winHeight / this.state.rows;
+    const width = winWidth / this.state.cols;
+
+    const tileSize = Math.round((height < width ? height : width) * .75);
+
+    document.querySelector('.game').style.width = tileSize * this.state.cols + 'px';
+    document.querySelector('.board').style.height = tileSize * this.state.rows + 'px';
+
+    document.querySelectorAll('.tile').forEach((tile) => {
+      tile.style.height = tileSize + 'px';
+    });
+
+    document.querySelectorAll('.tile').forEach((tile) => {
+      tile.style.width = tileSize + 'px';
+    });
+
+    this.setState({tileSize: tileSize})
   }
 
   initBoard = () => {
@@ -51,9 +74,8 @@ class App extends React.Component {
       newGame.push(i);
     }
 
-    this.setState((state, props) => {
+    this.setState(() => {
       return {
-        startingGame: newGame,
         game: newGame,
       };
     });
@@ -64,6 +86,7 @@ class App extends React.Component {
 
     for (let i = 0; i < 1000; i++) {
       let randomNumber = Math.floor(Math.random() * Math.floor(gamesize));
+
       if (this.isLegalMove(randomNumber)) {
         this.swapNumbers(randomNumber)
       }
@@ -75,36 +98,34 @@ class App extends React.Component {
     if (this.isLegalMove(value)) {
 
       const tile = evt.currentTarget;
-      const style = window.getComputedStyle(tile)
-      // const matrix = style.transform
-      // const numberPattern = /-?\d+\.?\d*/g;
-      // const matrixValues = matrix.match( numberPattern );
-
       const direction = this.getDirection(value);
-      console.log(direction);
 
-      // switch (direction) {
-      //   case 'up':
-      //     matrixValues[5] = parseInt(matrixValues[5]) - 100;
-      //     break;
-      //   case 'down':
-      //     matrixValues[5] = parseInt(matrixValues[5]) + 100;
-      //     break;     
-      //   case 'left':
-      //     matrixValues[4] = parseInt(matrixValues[4]) - 100;
-      //     break;     
-      //   case 'right':
-      //     matrixValues[4] = parseInt(matrixValues[4]) + 100;
-      //     break;
-      //   default:
-      //     break;
-      // }
+      switch (direction) {
+        case 'left':
+          tile.style.left = -this.state.tileSize + 'px';
+          break;
+      
+        case 'right':
+          tile.style.left = this.state.tileSize + 'px';
+          break;
+    
+        case 'up':
+          tile.style.top = -this.state.tileSize + 'px';
+          break;
+        
+        case 'down':
+          tile.style.top = this.state.tileSize + 'px';
+          break;
+    
+        default:
+          break;
+      }
 
-      // const matrixString = `matrix(${matrixValues.join(', ')})`;
-
-      // tile.style.transform = matrixString;
-
-      this.swapNumbers(value);
+      setTimeout(() => {
+        tile.style.top = '';
+        tile.style.left = '';
+        this.swapNumbers(value);
+      }, 200)
     }
   }
 

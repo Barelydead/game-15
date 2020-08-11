@@ -31,16 +31,12 @@ body {
   top: 0;
 }
 
-
-.tile:hover {
-  background-color: #eee;
-}
-
 .hidden {
   color: white;
   position: relative;
   z-index: -1;
   border: none;
+  background-color: white;
 }
 
 .btn {

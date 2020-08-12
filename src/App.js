@@ -57,9 +57,6 @@ class App extends React.Component {
 
     document.querySelectorAll('.tile').forEach((tile) => {
       tile.style.height = tileSize + 'px';
-    });
-
-    document.querySelectorAll('.tile').forEach((tile) => {
       tile.style.width = tileSize + 'px';
     });
 
@@ -121,11 +118,13 @@ class App extends React.Component {
           break;
       }
 
+      const animationTimeout = 200;
+
       setTimeout(() => {
         tile.style.top = '';
         tile.style.left = '';
         this.swapNumbers(value);
-      }, 200)
+      }, animationTimeout)
     }
   }
 
